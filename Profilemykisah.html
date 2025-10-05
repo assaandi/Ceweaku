@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uswatun Hasanah - Cewe Tersayang</title>
+    <style>
+        /* Reset dan Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            overflow-x: hidden;
+            color: #5a3e36;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Background Particle Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            color: #ff6b6b;
+            text-shadow: 3px 3px 0 #ffe0e0, 6px 6px 0 rgba(255, 107, 107, 0.2);
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #5a3e36;
+            margin-bottom: 2rem;
+        }
+
+        /* Heart Animation */
+        .heart {
+            color: #ff6b6b;
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            text-shadow: 2px 2px 0 #ffe0e0;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-image {
+            flex: 0 0 300px;
+            position: relative;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.5s ease;
+        }
+
+        .profile-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .profile-details {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .profile-details h2 {
+            font-size: 2.5rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0 #ffe0e0;
+        }
+
+        .profile-details p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+            color: #ff6b6b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 0 #ffe0e0;
+        }
+
+        .about-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-section h2 {
+            font-size: 2rem;
+            color: #ff6b6b;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 0 #ffe0e0;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 200px;
+            background: #ffe0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item .placeholder {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+            text-align: center;
+        }
+
+        /* Love Message Section */
+        .love-message {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .love-message h2 {
+            font-size: 2rem;
+            color: #ff6b6b;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 0 #ffe0e0;
+        }
+
+        .message-content {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .love-button {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .love-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        /* Floating Elements */
+        .floating-heart {
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 2rem;
+            opacity: 0.7;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #5a3e36;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.3);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.3);
+            }
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .profile-image {
+                flex: 0 0 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas for Particles -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- Floating Hearts -->
+    <div class="floating-heart" style="top: 10%; left: 5%;">❤️</div>
+    <div class="floating-heart" style="top: 20%; right: 10%;">💖</div>
+    <div class="floating-heart" style="top: 60%; left: 8%;">💕</div>
+    <div class="floating-heart" style="top: 40%; right: 5%;">💗</div>
+    <div class="floating-heart" style="top: 80%; left: 15%;">💘</div>
+    <div class="floating-heart" style="top: 30%; right: 15%;">💝</div>
+    
+    <header>
+        <h1 class="title">Uswatun Hasanah <span class="heart">❤️</span></h1>
+        <p class="subtitle">Cewe Paling Lucu dan Gemes di Dunia!</p>
+    </header>
+    
+    <div class="container">
+        <section class="profile-section">
+            <div class="profile-image">
+                <img src="uswa2.jpg" alt="Foto Uswatun Hasanah">
+            </div>
+            <div class="profile-details">
+                <h2>Tentang Uswatun</h2>
+                <p><strong>Nama:</strong> Uswatun Hasanah</p>
+                <p><strong>Umur:</strong> 17 Tahun</p>
+                <p><strong>Status:</strong> Cewe Tersayangku</p>
+                <p><strong>Keistimewaan:</strong> Paling Lucu, Paling Gemes, dan Paling Cantik!</p>
+                <p>Uswatun adalah cewe yang selalu bikin hari-hariku penuh warna. Senyumannya bisa bikin semua masalah jadi hilang, dan kelucuannya selalu bikin aku gemes pengen peluk terus!</p>
+            </div>
+        </section>
+        
+        <section class="about-section">
+            <h2>Kenapa Aku Sangat Sayang Sama Uswatun?</h2>
+            <div class="about-content">
+                <p>Hai, ini cewe aku, dia cwe paling lucu dan paling gemes! Setiap hari bersamanya adalah hadiah terindah. Dari cara dia tertawa, senyumannya yang manis, sampai tingkah lakunya yang bikin gemes, semuanya sempurna.</p>
+                <p>Dia adalah alasan kenapa pagi terasa lebih cerah dan malam terasa lebih indah. Setiap detik bersamanya adalah momen berharga yang ingin aku abadikan selamanya.</p>
+                <p>Uswatun adalah seseorang yang selalu membuatku merasa menjadi pria terberuntung di dunia. Aku bersyukur setiap hari bisa memilikinya dalam hidupku.</p>
+            </div>
+        </section>
+        
+        <section class="gallery-section">
+            <h2>Galeri Kenangan Manis</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="uswa1.jpg" alt="Foto Uswatun 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="uswa3.jpg" alt="Foto Uswatun 2">
+                </div>
+            </div>
+        </section>
+        
+        <section class="love-message">
+            <h2>Pesan Cinta untuk Uswatun</h2>
+            <div class="message-content">
+                <p>Uswatun sayang, kamu adalah matahari yang menerangi hariku, bintang yang menghiasi malamku, dan alasan terbesar kebahagiaanku.</p>
+                <p>Aku tidak akan pernah lelah mengatakan betapa beruntungnya aku memilikimu. Kamu adalah anugerah terindah dalam hidupku.</p>
+                <p>Terima kasih sudah menjadi dirimu yang lucu, gemes, dan selalu membuatku tersenyum. Aku sayang kamu lebih dari apapun!</p>
+            </div>
+            <button class="love-button" id="love-button">Love you cantik</button>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Dibuat dengan penuh cinta untuk Uswatun Hasanah ❤️</p>
+        <p>© 2023 - Cewe Tersayangku</p>
+    </footer>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Particle class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = `hsl(${Math.random() * 360}, 70%, 70%)`;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+            
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        // Create particles
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+        
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            // Draw connections between particles
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 182, 193, ${0.2 * (1 - distance/100)})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Start animation
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Love button effect
+        const loveButton = document.getElementById('love-button');
+        loveButton.addEventListener('click', function() {
+            // Create floating hearts
+            for (let i = 0; i < 20; i++) {
+                createFloatingHeart();
+            }
+            
+            // Show message
+            alert('Aku sayang kamu, Uswatun! ❤️💖💕');
+        });
+        
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.fontSize = Math.random() * 30 + 20 + 'px';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.opacity = '0.7';
+            heart.style.zIndex = '1000';
+            heart.style.pointerEvents = 'none';
+            document.body.appendChild(heart);
+            
+            // Animate heart
+            const animation = heart.animate([
+                { transform: 'translateY(0) scale(1)', opacity: 0.7 },
+                { transform: `translateY(-${window.innerHeight + 100}px) scale(0.5)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 3000 + 2000,
+                easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+            });
+            
+            // Remove heart after animation
+            animation.onfinish = () => {
+                heart.remove();
+            };
+        }
+        
+        // Add random sparkle effects
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                createSparkle();
+            }
+        }, 1000);
+        
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.position = 'fixed';
+            sparkle.style.fontSize = '20px';
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            sparkle.style.zIndex = '1000';
+            sparkle.style.pointerEvents = 'none';
+            document.body.appendChild(sparkle);
+            
+            // Animate sparkle
+            const animation = sparkle.animate([
+                { transform: 'scale(0) rotate(0deg)', opacity: 0 },
+                { transform: 'scale(1) rotate(180deg)', opacity: 1 },
+                { transform: 'scale(0) rotate(360deg)', opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'ease-out'
+            });
+            
+            // Remove sparkle after animation
+            animation.onfinish = () => {
+                sparkle.remove();
+            };
+        }
+    </script>
+</body>
+</html>
